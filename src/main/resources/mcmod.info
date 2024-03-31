@@ -1,0 +1,16 @@
+[
+{
+  "modid": "hktools",
+  "name": "HKTools",
+  "description": "good mod",
+  "version": "0.1",
+  "mcversion": "1.8.9",
+  "url": "https://github.com/critiqalfish/HKtools",
+  "updateUrl": "",
+  "authorList": ["smallpufferfish"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
