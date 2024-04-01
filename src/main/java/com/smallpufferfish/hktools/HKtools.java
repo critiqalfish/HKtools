@@ -3,10 +3,13 @@ package com.smallpufferfish.hktools;
 import com.smallpufferfish.hktools.commands.HKtoolsCommand;
 import com.smallpufferfish.hktools.features.ContinuousHit;
 import com.smallpufferfish.hktools.gui.HKtoolsGUI;
+import com.smallpufferfish.hktools.gui.QuickTpGUI;
 import com.smallpufferfish.hktools.keybinds.ContinuousHitKeybind;
 import com.smallpufferfish.hktools.keybinds.FarmingKeybinds;
 import com.smallpufferfish.hktools.keybinds.HKtoolsKeybind;
+import com.smallpufferfish.hktools.keybinds.QuickTpKeybind;
 import com.smallpufferfish.hktools.listeners.FarmingListener;
+import com.smallpufferfish.hktools.listeners.QuickTpListener;
 import com.smallpufferfish.hktools.utils.DelayedTask;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -24,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
         version = HKtools.VERSION)
 public class HKtools {
     public static final String MODID = "HKtools";
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "0.2";
 
     public static final boolean DEBUG = false;
     
@@ -33,6 +36,7 @@ public class HKtools {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new FarmingListener());
         MinecraftForge.EVENT_BUS.register(new ContinuousHit());
+        MinecraftForge.EVENT_BUS.register(new QuickTpListener());
         registerKeybinds();
         registerCommands();
         System.out.println("--- HKtools by smallpufferfish was loaded! ---");
@@ -50,6 +54,7 @@ public class HKtools {
         HKtoolsKeybind.register();
         FarmingKeybinds.register();
         ContinuousHitKeybind.register();
+        QuickTpKeybind.register();
     }
 
     private void registerCommands() {
