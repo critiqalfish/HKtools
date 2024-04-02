@@ -29,10 +29,10 @@ public class QuickTpGUI extends GuiScreen {
         double sectorAngle = 360 / sectors;
 
         for (int i = 0; i < sectors; i++) {
-            double placeAngel = Math.toRadians(i * sectorAngle);
+            double placeAngle = Math.toRadians(i * sectorAngle);
 
-            int x = (int) (width / 2 + 200 * Math.sin(placeAngel));
-            int y = (int) (height / 2 - 200 * Math.cos(placeAngel));
+            int x = (int) (width / 2 + 200 * Math.sin(placeAngle));
+            int y = (int) (height / 2 - 200 * Math.cos(placeAngle));
 
             points.add(new Point(x, y));
         }
