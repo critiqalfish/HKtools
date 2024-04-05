@@ -3,15 +3,20 @@ package com.smallpufferfish.hktools.commands;
 import com.smallpufferfish.hktools.HKtools;
 import com.smallpufferfish.hktools.gui.HKtoolsGUI;
 import com.smallpufferfish.hktools.utils.DelayedTask;
+import com.smallpufferfish.hktools.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class HKtoolsCommand extends CommandBase {
     @Override
@@ -24,7 +29,7 @@ public class HKtoolsCommand extends CommandBase {
         return "";
     }
 
-    private static final String[] SUBCOMMANDS = {};
+    private static final String[] SUBCOMMANDS = {"debug"};
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
@@ -41,7 +46,26 @@ public class HKtoolsCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools v" + HKtools.VERSION));
-        new DelayedTask((() -> Minecraft.getMinecraft().displayGuiScreen(new HKtoolsGUI())), 1);
+        if (args.length == 0) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools v" + HKtools.VERSION));
+            new DelayedTask((() -> Minecraft.getMinecraft().displayGuiScreen(new HKtoolsGUI())), 1);
+        }
+        else if (args[0].equals("debug") && args.length == 2) {
+            switch (args[1]) {
+                case "sb":
+                    HKtools.LOGGER.info("yo");
+                    List<String> sb = Utils.getScoreboardLines();
+                    for (String line : sb) {
+                        HKtools.LOGGER.info(line);
+                    }
+                    break;
+                case "map":
+                    ItemStack stack = Minecraft.getMinecraft().thePlayer.getHeldItem();
+                    if (stack.getItem() == Items.filled_map) {
+                        HKtools.LOGGER.info(Arrays.deepToString(Utils.getMap(stack)));
+                    }
+                    break;
+            }
+        }
     }
 }

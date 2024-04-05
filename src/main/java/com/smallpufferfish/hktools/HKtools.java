@@ -16,10 +16,16 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @Mod(   modid = HKtools.MODID,
         name = HKtools.MODID,
@@ -30,6 +36,8 @@ public class HKtools {
     public static final String VERSION = "0.2";
 
     public static final boolean DEBUG = false;
+    public static final Logger LOGGER = Logger.getLogger("HKTools");
+    public static FileHandler logFH;
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -39,7 +47,20 @@ public class HKtools {
         MinecraftForge.EVENT_BUS.register(new QuickTpListener());
         registerKeybinds();
         registerCommands();
+        try {
+            logFH = new FileHandler("hktools.log");
+            LOGGER.addHandler(logFH);
+            SimpleFormatter formatter = new SimpleFormatter();
+            logFH.setFormatter(formatter);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         System.out.println("--- HKtools by smallpufferfish was loaded! ---");
+    }
+
+    @Mod.EventHandler
+    public void shutdown(FMLServerStoppingEvent event) {
+        logFH.close();
     }
 
     @SideOnly(Side.CLIENT)

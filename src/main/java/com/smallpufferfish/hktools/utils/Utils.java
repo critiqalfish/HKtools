@@ -1,10 +1,15 @@
 package com.smallpufferfish.hktools.utils;
 
+import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.world.storage.MapData;
+import scala.Int;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -34,6 +39,24 @@ public class Utils {
         }
         Collections.reverse(list);
         return list;
+    }
+
+    public static Integer[][] getMap(ItemStack mapStack) {
+        MapData data = ((ItemMap) mapStack.getItem()).getMapData(mapStack, Minecraft.getMinecraft().theWorld);
+        Integer[][] map = new Integer[128][128];
+        for (int i = 0; i < 16384; i++) {
+            int x = i % 128;
+            int y = i / 128;
+            int j = data.colors[i] % 255;
+            int rgba;
+            if (j / 4 == 0) {
+                rgba = (i + 1 / 128 & 1) * 8 + 16 << 24;
+            } else {
+                rgba = MapColor.mapColorArray[j / 4].getMapColor(j & 3);
+            }
+            map[x][y] = rgba & 0x00FFFFFF;
+        }
+        return map;
     }
 
     public static String[] getNames(Class<? extends Enum<?>> e) {
