@@ -2,8 +2,8 @@ package com.smallpufferfish.hktools;
 
 import com.smallpufferfish.hktools.commands.HKtoolsCommand;
 import com.smallpufferfish.hktools.features.ContinuousHit;
+import com.smallpufferfish.hktools.features.PestESP;
 import com.smallpufferfish.hktools.gui.HKtoolsGUI;
-import com.smallpufferfish.hktools.gui.QuickTpGUI;
 import com.smallpufferfish.hktools.keybinds.ContinuousHitKeybind;
 import com.smallpufferfish.hktools.keybinds.FarmingKeybinds;
 import com.smallpufferfish.hktools.keybinds.HKtoolsKeybind;
@@ -33,7 +33,7 @@ import java.util.logging.SimpleFormatter;
         version = HKtools.VERSION)
 public class HKtools {
     public static final String MODID = "HKtools";
-    public static final String VERSION = "0.2";
+    public static final String VERSION = "0.2.1";
 
     public static final boolean DEBUG = false;
     public static final Logger LOGGER = Logger.getLogger("HKTools");
@@ -45,6 +45,7 @@ public class HKtools {
         MinecraftForge.EVENT_BUS.register(new FarmingListener());
         MinecraftForge.EVENT_BUS.register(new ContinuousHit());
         MinecraftForge.EVENT_BUS.register(new QuickTpListener());
+        MinecraftForge.EVENT_BUS.register(new PestESP());
         registerKeybinds();
         registerCommands();
         try {
