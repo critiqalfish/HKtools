@@ -33,7 +33,7 @@ public class PestESP {
                     AxisAlignedBB aabb = as.getEntityBoundingBox();
                     if (!gardenBarnAABB.intersectsWith(aabb)) {
                         aabb = aabb.contract(0, 0.75, 0).offset(0, 0.75, 0).expand(0.1, 0.1, 0.1);
-                        RenderUtils.drawAABB(aabb, new Color(255, 0, 132, 255), event.partialTicks);
+                        RenderUtils.drawAABBoutline(aabb, new Color(255, 0, 132, 255), event.partialTicks);
                     }
                 }
             }

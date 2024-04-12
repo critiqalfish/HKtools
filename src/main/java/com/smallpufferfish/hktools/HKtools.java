@@ -2,6 +2,7 @@ package com.smallpufferfish.hktools;
 
 import com.smallpufferfish.hktools.commands.HKtoolsCommand;
 import com.smallpufferfish.hktools.features.ContinuousHit;
+import com.smallpufferfish.hktools.features.F7TermWaypoints;
 import com.smallpufferfish.hktools.features.HoldClick;
 import com.smallpufferfish.hktools.features.PestESP;
 import com.smallpufferfish.hktools.gui.HKtoolsGUI;
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -40,22 +43,29 @@ public class HKtools {
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new FarmingListener());
-        MinecraftForge.EVENT_BUS.register(new ContinuousHit());
-        MinecraftForge.EVENT_BUS.register(new HoldClick());
-        MinecraftForge.EVENT_BUS.register(new QuickTpListener());
-        MinecraftForge.EVENT_BUS.register(new PestESP());
-        registerKeybinds();
-        registerCommands();
         try {
-            logFH = new FileHandler("hktools.log", true);
+            if (!Files.isDirectory(Paths.get("HKtools"))) {
+                Files.createDirectory(Paths.get("HKtools"));
+            }
+
+            logFH = new FileHandler("HKtools/hktools.log", true);
             LOGGER.addHandler(logFH);
             SimpleFormatter formatter = new SimpleFormatter();
             logFH.setFormatter(formatter);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new FarmingListener());
+        MinecraftForge.EVENT_BUS.register(new ContinuousHit());
+        MinecraftForge.EVENT_BUS.register(new HoldClick());
+        MinecraftForge.EVENT_BUS.register(new QuickTpListener());
+        MinecraftForge.EVENT_BUS.register(new PestESP());
+        MinecraftForge.EVENT_BUS.register(new F7TermWaypoints());
+        registerKeybinds();
+        registerCommands();
+
         System.out.println("--- HKtools by smallpufferfish was loaded! ---");
     }
 
