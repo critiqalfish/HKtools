@@ -1,5 +1,6 @@
 package com.smallpufferfish.hktools.features;
 
+import com.smallpufferfish.hktools.HKtools;
 import com.smallpufferfish.hktools.render.RenderUtils;
 import com.smallpufferfish.hktools.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -21,7 +22,9 @@ public class PestESP {
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (Minecraft.getMinecraft().theWorld == null) return;
-        if (!Utils.isInGarden()) return;
+        if (!HKtools.DEBUG) {
+            if (!Utils.isInGarden()) return;
+        }
 
         for (Object ent : Minecraft.getMinecraft().theWorld.loadedEntityList) {
             if (ent instanceof EntityArmorStand) {

@@ -2,6 +2,7 @@ package com.smallpufferfish.hktools.utils;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.Score;
@@ -57,6 +58,15 @@ public class Utils {
             map[x][y] = rgba & 0x00FFFFFF;
         }
         return map;
+    }
+
+    public static List<String> getTablist() {
+        Collection<NetworkPlayerInfo> players = Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap();
+        ArrayList<String> tablist = new ArrayList<String>();
+        for (NetworkPlayerInfo info : players) {
+            tablist.add(Minecraft.getMinecraft().ingameGUI.getTabList().getPlayerName(info));
+        }
+        return tablist;
     }
 
     public static String[] getNames(Class<? extends Enum<?>> e) {

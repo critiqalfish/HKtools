@@ -1,7 +1,8 @@
 package com.smallpufferfish.hktools.features;
 
-import com.smallpufferfish.hktools.keybinds.ContinuousHitKeybind;
+import com.smallpufferfish.hktools.keybinds.HoldClickKeybind;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,7 +11,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContinuousHit {
+public class HoldClick {
     public static boolean activated = false;
 
     @SideOnly(Side.CLIENT)
@@ -22,27 +23,24 @@ public class ContinuousHit {
         Minecraft mc = Minecraft.getMinecraft();
         MovingObjectPosition target = mc.objectMouseOver;
 
-        if (mc.gameSettings.keyBindAttack.isKeyDown()) {
-            if (mc.thePlayer != null && !mc.thePlayer.isSwingInProgress) {
-                if (target != null && target.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
-                    mc.thePlayer.swingItem();
-                    mc.playerController.attackEntity(mc.thePlayer, target.entityHit);
-                }
-            }
+        if (target != null && target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            if (mc.theWorld == null) return;
+            KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(), true);
         }
     }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (ContinuousHitKeybind.keybind.isPressed()) {
+        if (HoldClickKeybind.keybind.isPressed()) {
             if (!activated) {
                 activated = true;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: activated continuous hit"));
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: activated hold click"));
             }
             else {
                 activated = false;
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: deactivated continuous hit"));
+                KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindAttack.getKeyCode(), false);
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: deactivated hold click"));
             }
         }
     }

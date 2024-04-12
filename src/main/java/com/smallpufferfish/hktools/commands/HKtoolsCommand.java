@@ -9,6 +9,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -64,6 +65,13 @@ public class HKtoolsCommand extends CommandBase {
                     if (stack.getItem() == Items.filled_map) {
                         HKtools.LOGGER.info(Arrays.deepToString(Utils.getMap(stack)));
                     }
+                    break;
+                case "item":
+                    ItemStack item = Minecraft.getMinecraft().thePlayer.getHeldItem();
+                    HKtools.LOGGER.info(item.getDisplayName());
+                    break;
+                case "tab":
+                    HKtools.LOGGER.info(Utils.getTablist().toString());
                     break;
             }
         }

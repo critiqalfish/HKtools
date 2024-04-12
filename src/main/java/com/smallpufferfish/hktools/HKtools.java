@@ -2,12 +2,10 @@ package com.smallpufferfish.hktools;
 
 import com.smallpufferfish.hktools.commands.HKtoolsCommand;
 import com.smallpufferfish.hktools.features.ContinuousHit;
+import com.smallpufferfish.hktools.features.HoldClick;
 import com.smallpufferfish.hktools.features.PestESP;
 import com.smallpufferfish.hktools.gui.HKtoolsGUI;
-import com.smallpufferfish.hktools.keybinds.ContinuousHitKeybind;
-import com.smallpufferfish.hktools.keybinds.FarmingKeybinds;
-import com.smallpufferfish.hktools.keybinds.HKtoolsKeybind;
-import com.smallpufferfish.hktools.keybinds.QuickTpKeybind;
+import com.smallpufferfish.hktools.keybinds.*;
 import com.smallpufferfish.hktools.listeners.FarmingListener;
 import com.smallpufferfish.hktools.listeners.QuickTpListener;
 import com.smallpufferfish.hktools.utils.DelayedTask;
@@ -22,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -44,12 +43,13 @@ public class HKtools {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new FarmingListener());
         MinecraftForge.EVENT_BUS.register(new ContinuousHit());
+        MinecraftForge.EVENT_BUS.register(new HoldClick());
         MinecraftForge.EVENT_BUS.register(new QuickTpListener());
         MinecraftForge.EVENT_BUS.register(new PestESP());
         registerKeybinds();
         registerCommands();
         try {
-            logFH = new FileHandler("hktools.log");
+            logFH = new FileHandler("hktools.log", true);
             LOGGER.addHandler(logFH);
             SimpleFormatter formatter = new SimpleFormatter();
             logFH.setFormatter(formatter);
@@ -76,6 +76,7 @@ public class HKtools {
         HKtoolsKeybind.register();
         FarmingKeybinds.register();
         ContinuousHitKeybind.register();
+        HoldClickKeybind.register();
         QuickTpKeybind.register();
     }
 
