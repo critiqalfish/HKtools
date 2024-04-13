@@ -10,18 +10,42 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.world.storage.MapData;
-import scala.Int;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class Utils {
+    private static final Pattern emojiStripper = Pattern.compile("\uD83C\uDF6B|\uD83D\uDCA3|\uD83D\uDC7D|\uD83D\uDD2E|\uD83D\uDC0D|\uD83D\uDC7E|\uD83C\uDF20|\uD83C\uDF6D|\u26BD|\uD83C\uDFC0|\uD83D\uDC79|\uD83C\uDF81|\uD83C\uDF89|\uD83C\uDF82|\uD83D\uDD2B");
+    private static final Pattern colorStripper = Pattern.compile("(?i)§[0-9A-FK-ORZ]");
+
     public static boolean isInGarden() {
         List<String> lines = getScoreboardLines();
         for (String line : lines) {
-            if (line.contains("The Garde\ud83c\udf20n") || line.contains("The Garden") || line.contains("Plot -")) return true;
+            if (line.contains("The Garden") || line.contains("Plot -")) return true;
         }
         return false;
+    }
+
+    public static boolean isInDungeons() {
+        List<String> lines = getScoreboardLines();
+        for (String line : lines) {
+            if (line.contains("The Catacombs (") && !line.contains("Queue")) return true;
+        }
+        return false;
+    }
+
+    public static int dungeonFloor() {
+        List<String> lines = getScoreboardLines();
+        for (String line : lines) {
+            if (line.contains("The Catacombs (") && !line.contains("Queue")) {
+                int i = line.lastIndexOf(")");
+                if (i != -1) {
+                    char f = line.charAt(i - 1);
+                    if (f >= 49 && f <= 55) return f - 48;
+                }
+            }
+        }
+        return 0;
     }
 
     public static List<String> getScoreboardLines() {
@@ -34,9 +58,8 @@ public class Utils {
         List<String> list = new ArrayList<>();
         for (Score line : scores) {
             ScorePlayerTeam team = sb.getPlayersTeam(line.getPlayerName());
-            Pattern colorStripper = Pattern.compile("(?i)§[0-9A-FK-ORZ]");
-            String cleansed1 = colorStripper.matcher(ScorePlayerTeam.formatPlayerName(team, line.getPlayerName()).trim()).replaceAll("");
-            list.add(cleansed1);
+            String cleansed = clean(ScorePlayerTeam.formatPlayerName(team, line.getPlayerName()));
+            list.add(cleansed);
         }
         Collections.reverse(list);
         return list;
@@ -64,9 +87,17 @@ public class Utils {
         Collection<NetworkPlayerInfo> players = Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap();
         ArrayList<String> tablist = new ArrayList<String>();
         for (NetworkPlayerInfo info : players) {
-            tablist.add(Minecraft.getMinecraft().ingameGUI.getTabList().getPlayerName(info));
+            String cleansed = clean(Minecraft.getMinecraft().ingameGUI.getTabList().getPlayerName(info));
+            tablist.add(cleansed);
         }
         return tablist;
+    }
+
+    public static String clean(String str) {
+        str = str.trim();
+        str = emojiStripper.matcher(str).replaceAll("");
+        str = colorStripper.matcher(str).replaceAll("");
+        return str;
     }
 
     public static String[] getNames(Class<? extends Enum<?>> e) {

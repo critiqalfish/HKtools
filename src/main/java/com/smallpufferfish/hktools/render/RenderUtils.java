@@ -88,41 +88,21 @@ public class RenderUtils {
         worldRenderer.setTranslation(-xFix, -yFix, -zFix);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        //GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
         GL11.glLineWidth(1.5F);
-        GL11.glColor4f(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 255);
+        GL11.glColor4f(color.getRed(), color.getGreen(), color.getBlue(), (float) color.getAlpha() / 255);
 
-        // bottom outline
-        worldRenderer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
-        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
-        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
-        worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        // top outline
-        worldRenderer.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION);
+        // bottom face
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
         worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
         worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
         worldRenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        // side outlines
-        worldRenderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
-        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
-        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
-        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
-        worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
-        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
-        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
         tessellator.draw();
 
         // top face
@@ -133,12 +113,36 @@ public class RenderUtils {
         worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
         tessellator.draw();
 
-        // bottom face
+        // front face
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
         worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
+        tessellator.draw();
+
+        // right face
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
+        tessellator.draw();
+
+        // back face
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
         worldRenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
         worldRenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        tessellator.draw();
+
+        // left face
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
+        worldRenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
         tessellator.draw();
 
         GL11.glLineWidth(1.0F);
@@ -147,7 +151,7 @@ public class RenderUtils {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
-        //GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         worldRenderer.setTranslation(0, 0, 0);
 

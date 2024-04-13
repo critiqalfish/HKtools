@@ -73,6 +73,17 @@ public class HKtoolsCommand extends CommandBase {
                 case "tab":
                     HKtools.LOGGER.info(Utils.getTablist().toString());
                     break;
+                case "where":
+                    if (Utils.isInDungeons()) {
+                        HKtools.LOGGER.info("in dungeons f" + Utils.dungeonFloor());
+                    }
+                    else if (Utils.isInGarden()) {
+                        HKtools.LOGGER.info("in garden");
+                    }
+                    else {
+                        HKtools.LOGGER.info("in dreamland");
+                    }
+                    break;
             }
         }
     }
