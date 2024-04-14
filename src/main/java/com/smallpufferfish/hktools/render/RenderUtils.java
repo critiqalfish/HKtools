@@ -4,9 +4,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -156,5 +158,36 @@ public class RenderUtils {
         worldRenderer.setTranslation(0, 0, 0);
 
         GL11.glPopMatrix();
+    }
+
+    public static void drawTracer(Vec3 pos, Color color) {
+        final RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        final double x = pos.xCoord - renderManager.viewerPosX;
+        final double y = pos.yCoord - renderManager.viewerPosY;
+        final double z = pos.zCoord - renderManager.viewerPosZ;
+        final Vec3 eyeVector = new Vec3(0.0, 0.0, 1.0).rotatePitch(-(float)Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationPitch)).rotateYaw(-(float)Math.toRadians(Minecraft.getMinecraft().thePlayer.rotationYaw));
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+        GL11.glLineWidth(2.0f);
+        GL11.glColor4f(color.getRed(), color.getGreen(), color.getBlue(), (float) color.getAlpha() / 255);
+
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3d(eyeVector.xCoord, Minecraft.getMinecraft().thePlayer.getEyeHeight() + eyeVector.yCoord, eyeVector.zCoord);
+        GL11.glVertex3d(x, y, z);
+        GL11.glEnd();
+
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.resetColor();
     }
 }

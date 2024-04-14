@@ -1,5 +1,6 @@
 package com.smallpufferfish.hktools.features;
 
+import com.smallpufferfish.hktools.HKtools;
 import com.smallpufferfish.hktools.keybinds.HoldClickKeybind;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class HoldClick {
-    public static boolean activated = false;
+    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("HoldClick"));
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent

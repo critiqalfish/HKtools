@@ -17,9 +17,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FarmingListener {
+    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("Farming"));
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (!activated) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
 
@@ -60,6 +62,7 @@ public class FarmingListener {
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (!activated) return;
 
         if (!HKtools.DEBUG) {
             if (!Utils.isInGarden()) return;

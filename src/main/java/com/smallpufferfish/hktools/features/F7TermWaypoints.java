@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class F7TermWaypoints {
+    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("F7TermWaypoints"));
     JsonArray terms;
     private int gate = -1;
     private int termsDone = -1;
@@ -41,6 +42,7 @@ public class F7TermWaypoints {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
+        if (!activated) return;
         if (gate == -1) return;
         if (!Utils.isInDungeons() && Utils.dungeonFloor() != 7) return;
 
@@ -56,6 +58,7 @@ public class F7TermWaypoints {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
+        if (!activated) return;
         if (event.type > 1) return;
         if (!Utils.isInDungeons() && Utils.dungeonFloor() != 7) return;
 
@@ -86,7 +89,7 @@ public class F7TermWaypoints {
                 termsDone = -1;
             }
         }
-        else if (Utils.clean(event.message.getUnformattedText()).contains("[BOSS] Goldor: Stop touching those terminals!") || Utils.clean(event.message.getUnformattedText()).contains("[BOSS] Goldor: Now that you're a Ghost, can you help me clean up?")) {
+        else if (Utils.clean(event.message.getUnformattedText()).contains("The Core entrance is opening!") || Utils.clean(event.message.getUnformattedText()).contains("[BOSS] Goldor: Now that you're a Ghost, can you help me clean up?")) {
             gate = -1;
             termsDone = -1;
             HKtools.LOGGER.info("goldor end");

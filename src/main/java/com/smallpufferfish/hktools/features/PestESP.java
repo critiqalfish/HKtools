@@ -16,15 +16,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.awt.*;
 
 public class PestESP {
+    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("PestESP"));
     private static final AxisAlignedBB gardenBarnAABB = new AxisAlignedBB(new BlockPos(-46, 65, -46), new BlockPos(46, 90, 46));
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (Minecraft.getMinecraft().theWorld == null) return;
+        if (!activated) return;
+        if (Minecraft.getMinecraft().theWorld == null || Minecraft.getMinecraft().thePlayer == null) return;
         if (!HKtools.DEBUG) {
             if (!Utils.isInGarden()) return;
         }
+        if (Minecraft.getMinecraft().thePlayer.getHeldItem() == null || !Minecraft.getMinecraft().thePlayer.getHeldItem().getDisplayName().contains("Vacuum")) return;
 
         for (Object ent : Minecraft.getMinecraft().theWorld.loadedEntityList) {
             if (ent instanceof EntityArmorStand) {
@@ -34,6 +37,7 @@ public class PestESP {
                     if (!gardenBarnAABB.intersectsWith(aabb)) {
                         aabb = aabb.contract(0, 0.75, 0).offset(0, 0.75, 0).expand(0.1, 0.1, 0.1);
                         RenderUtils.drawAABBoutline(aabb, new Color(255, 0, 132, 255), event.partialTicks);
+                        RenderUtils.drawTracer(as.getPositionEyes(event.partialTicks), new Color(255, 0, 132, 255));
                     }
                 }
             }

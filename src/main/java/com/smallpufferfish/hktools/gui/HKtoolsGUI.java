@@ -1,21 +1,52 @@
 package com.smallpufferfish.hktools.gui;
 
+import com.smallpufferfish.hktools.HKtools;
+import com.smallpufferfish.hktools.features.*;
 import com.smallpufferfish.hktools.keybinds.HKtoolsKeybind;
+import com.smallpufferfish.hktools.keybinds.QuickTpKeybind;
+import com.smallpufferfish.hktools.listeners.FarmingListener;
+import com.smallpufferfish.hktools.listeners.QuickTpListener;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.client.config.GuiCheckBox;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class HKtoolsGUI extends GuiScreen {
     private final long timeOpened = System.currentTimeMillis();
+    private GuiCheckBox farmingRebinder;
+    private GuiCheckBox pestESP;
+    private GuiCheckBox quickTP;
+    private GuiCheckBox f7TermWPs;
+    private GuiCheckBox contHit;
+    private GuiCheckBox holdClick;
+    private final double boxesStartW = 0.12;
+    private final double boxesStartH = 0.20;
+    private final double boxesHmod = 0.05;
 
     @SideOnly(Side.CLIENT)
     @Override
     public void initGui() {
+        buttonList.clear();
+        farmingRebinder = new GuiCheckBox(0, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 0)), "Farming Rebinder", FarmingListener.activated);
+        pestESP = new GuiCheckBox(1, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 1)), "Pest ESP", PestESP.activated);
+        quickTP = new GuiCheckBox(2, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 2)), "QuickTP Menu", QuickTpListener.activated);
+        f7TermWPs = new GuiCheckBox(3, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 3)), "F7 Terminal Waypoints", F7TermWaypoints.activated);
+        contHit = new GuiCheckBox(4, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 4)), "Continuous Hit", ContinuousHit.activated);
+        holdClick = new GuiCheckBox(5, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 5)), "Hold Click", HoldClick.activated);
+        buttonList.add(farmingRebinder);
+        buttonList.add(pestESP);
+        buttonList.add(quickTP);
+        buttonList.add(f7TermWPs);
+        buttonList.add(contHit);
+        buttonList.add(holdClick);
         super.initGui();
     }
 
@@ -46,12 +77,43 @@ public class HKtoolsGUI extends GuiScreen {
 
         drawHorizontalLine((int) (width * 0.12), (int) (width - width * 0.12), (int) (height * 0.18), new Color(255, 0, 132, alpha).getRGB());
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        GlStateManager.pushMatrix();
+        for (GuiButton button : buttonList) {
+            button.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
+        }
+        GlStateManager.popMatrix();
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id) {
+            case 0:
+                FarmingListener.activated = !FarmingListener.activated;
+                HKtools.CONFIG.setProperty("Farming", HKtools.boolToStr(FarmingListener.activated));
+                break;
+            case 1:
+                PestESP.activated = !PestESP.activated;
+                HKtools.CONFIG.setProperty("PestESP", HKtools.boolToStr(PestESP.activated));
+                break;
+            case 2:
+                QuickTpListener.activated = !QuickTpListener.activated;
+                HKtools.CONFIG.setProperty("QuickTpMenu", HKtools.boolToStr(QuickTpListener.activated));
+                break;
+            case 3:
+                F7TermWaypoints.activated = !F7TermWaypoints.activated;
+                HKtools.CONFIG.setProperty("F7TermWaypoints", HKtools.boolToStr(F7TermWaypoints.activated));
+                break;
+            case 4:
+                ContinuousHit.activated = !ContinuousHit.activated;
+                HKtools.CONFIG.setProperty("ContinuousHit", HKtools.boolToStr(ContinuousHit.activated));
+                break;
+            case 5:
+                HoldClick.activated = !HoldClick.activated;
+                HKtools.CONFIG.setProperty("HoldClick", HKtools.boolToStr(HoldClick.activated));
+                break;
+        }
+        HKtools.CONFIG.store(new FileWriter("HKtools/hktools.config"), null);
         super.actionPerformed(button);
     }
 
