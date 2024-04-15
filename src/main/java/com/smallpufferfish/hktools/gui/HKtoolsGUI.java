@@ -27,6 +27,7 @@ public class HKtoolsGUI extends GuiScreen {
     private GuiCheckBox f7TermWPs;
     private GuiCheckBox contHit;
     private GuiCheckBox holdClick;
+    private GuiCheckBox lonelyMode;
     private final double boxesStartW = 0.12;
     private final double boxesStartH = 0.20;
     private final double boxesHmod = 0.05;
@@ -41,12 +42,14 @@ public class HKtoolsGUI extends GuiScreen {
         f7TermWPs = new GuiCheckBox(3, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 3)), "F7 Terminal Waypoints", F7TermWaypoints.activated);
         contHit = new GuiCheckBox(4, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 4)), "Continuous Hit", ContinuousHit.activated);
         holdClick = new GuiCheckBox(5, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 5)), "Hold Click", HoldClick.activated);
+        lonelyMode = new GuiCheckBox(6, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 6)), "Lonely Mode", LonelyMode.activated);
         buttonList.add(farmingRebinder);
         buttonList.add(pestESP);
         buttonList.add(quickTP);
         buttonList.add(f7TermWPs);
         buttonList.add(contHit);
         buttonList.add(holdClick);
+        buttonList.add(lonelyMode);
         super.initGui();
     }
 
@@ -111,6 +114,10 @@ public class HKtoolsGUI extends GuiScreen {
             case 5:
                 HoldClick.activated = !HoldClick.activated;
                 HKtools.CONFIG.setProperty("HoldClick", HKtools.boolToStr(HoldClick.activated));
+                break;
+            case 6:
+                LonelyMode.activated = !LonelyMode.activated;
+                HKtools.CONFIG.setProperty("LonelyMode", HKtools.boolToStr(LonelyMode.activated));
                 break;
         }
         HKtools.CONFIG.store(new FileWriter("HKtools/hktools.config"), null);

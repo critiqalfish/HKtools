@@ -1,10 +1,7 @@
 package com.smallpufferfish.hktools;
 
 import com.smallpufferfish.hktools.commands.HKtoolsCommand;
-import com.smallpufferfish.hktools.features.ContinuousHit;
-import com.smallpufferfish.hktools.features.F7TermWaypoints;
-import com.smallpufferfish.hktools.features.HoldClick;
-import com.smallpufferfish.hktools.features.PestESP;
+import com.smallpufferfish.hktools.features.*;
 import com.smallpufferfish.hktools.gui.HKtoolsGUI;
 import com.smallpufferfish.hktools.keybinds.*;
 import com.smallpufferfish.hktools.listeners.FarmingListener;
@@ -73,6 +70,7 @@ public class HKtools {
         MinecraftForge.EVENT_BUS.register(new QuickTpListener());
         MinecraftForge.EVENT_BUS.register(new PestESP());
         MinecraftForge.EVENT_BUS.register(new F7TermWaypoints());
+        MinecraftForge.EVENT_BUS.register(new LonelyMode());
         registerKeybinds();
         registerCommands();
 
@@ -122,6 +120,9 @@ public class HKtools {
         }
         if (CONFIG.getProperty("HoldClick") == null) {
             CONFIG.setProperty("HoldClick", "disabled");
+        }
+        if (CONFIG.getProperty("LonelyMode") == null) {
+            CONFIG.setProperty("LonelyMode", "disabled");
         }
 
         CONFIG.store(new FileWriter("HKtools/hktools.config"), null);
