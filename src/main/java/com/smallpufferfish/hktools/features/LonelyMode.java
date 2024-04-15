@@ -2,6 +2,7 @@ package com.smallpufferfish.hktools.features;
 
 import com.smallpufferfish.hktools.HKtools;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,6 +21,7 @@ public class LonelyMode {
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Pre event) {
         if (event.entityPlayer.getName().contains(Minecraft.getMinecraft().getSession().getUsername())) return;
+        if (!(event.entityPlayer instanceof EntityOtherPlayerMP)) return;
         if (activated) event.setCanceled(true);
     }
 
