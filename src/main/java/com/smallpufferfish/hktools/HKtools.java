@@ -23,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.FileHandler;
@@ -41,6 +43,8 @@ public class HKtools {
     public static final Logger LOGGER = Logger.getLogger("HKTools");
     public static FileHandler logFH;
     public static Properties CONFIG;
+
+    public static ArrayList<Feature> features = new ArrayList<>();
     
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -53,7 +57,6 @@ public class HKtools {
             cfg.createNewFile();
             CONFIG = new Properties();
             CONFIG.load(Files.newInputStream(Paths.get("HKtools/hktools.config")));
-            configureConfig();
 
             logFH = new FileHandler("HKtools/hktools.log", true);
             LOGGER.addHandler(logFH);
@@ -64,15 +67,26 @@ public class HKtools {
         }
 
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new FarmingListener());
-        MinecraftForge.EVENT_BUS.register(new ContinuousHit());
-        MinecraftForge.EVENT_BUS.register(new HoldClick());
-        MinecraftForge.EVENT_BUS.register(new QuickTpListener());
-        MinecraftForge.EVENT_BUS.register(new PestESP());
-        MinecraftForge.EVENT_BUS.register(new F7TermWaypoints());
-        MinecraftForge.EVENT_BUS.register(new LonelyMode());
+
+        features.add(new FarmingListener());
+        features.add(new ContinuousHit());
+        features.add(new QuickTpListener());
+        features.add(new PestESP());
+        features.add(new F7TermWaypoints());
+        features.add(new HoldClick());
+        features.add(new LonelyMode());
+        for (Feature f : features) {
+            MinecraftForge.EVENT_BUS.register(f);
+        }
+
         registerKeybinds();
         registerCommands();
+
+        try {
+            CONFIG.store(new FileWriter("HKtools/hktools.config"), null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         System.out.println("--- HKtools by smallpufferfish was loaded! ---");
     }
@@ -100,32 +114,6 @@ public class HKtools {
 
     private void registerCommands() {
         ClientCommandHandler.instance.registerCommand(new HKtoolsCommand());
-    }
-
-    private void configureConfig() throws IOException {
-        if (CONFIG.getProperty("Farming") == null) {
-            CONFIG.setProperty("Farming", "enabled");
-        }
-        if (CONFIG.getProperty("PestESP") == null) {
-            CONFIG.setProperty("PestESP", "enabled");
-        }
-        if (CONFIG.getProperty("QuickTpMenu") == null) {
-            CONFIG.setProperty("QuickTpMenu", "enabled");
-        }
-        if (CONFIG.getProperty("F7TermWaypoints") == null) {
-            CONFIG.setProperty("F7TermWaypoints", "enabled");
-        }
-        if (CONFIG.getProperty("ContinuousHit") == null) {
-            CONFIG.setProperty("ContinuousHit", "disabled");
-        }
-        if (CONFIG.getProperty("HoldClick") == null) {
-            CONFIG.setProperty("HoldClick", "disabled");
-        }
-        if (CONFIG.getProperty("LonelyMode") == null) {
-            CONFIG.setProperty("LonelyMode", "disabled");
-        }
-
-        CONFIG.store(new FileWriter("HKtools/hktools.config"), null);
     }
 
     public static boolean strToBool(String s) {

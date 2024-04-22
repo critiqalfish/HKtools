@@ -21,13 +21,13 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class F7TermWaypoints {
-    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("F7TermWaypoints"));
-    JsonArray terms;
+public class F7TermWaypoints extends Feature {
+    private JsonArray terms;
     private int gate = -1;
     private int termsDone = -1;
 
     public F7TermWaypoints() {
+        super("F7 Terminal Waypoints");
         try {
             ResourceLocation loc = new ResourceLocation(HKtools.MODID, "data/NotStolenFromSoopy.json");
             InputStream in = Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream();

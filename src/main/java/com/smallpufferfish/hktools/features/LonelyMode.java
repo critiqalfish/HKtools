@@ -9,13 +9,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LonelyMode {
-    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("LonelyMode"));
+public class LonelyMode extends Feature {
     private static final Pattern chatUserMessage = Pattern.compile("(?:\\[\\d{1,3}\\])\\s?(?:\\[.+\\])?\\s?(.+):\\s(.*)");
+
+    public LonelyMode() {
+        super("Lonely Mode");
+    }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent

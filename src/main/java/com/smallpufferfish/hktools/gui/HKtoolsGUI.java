@@ -21,13 +21,6 @@ import java.io.IOException;
 
 public class HKtoolsGUI extends GuiScreen {
     private final long timeOpened = System.currentTimeMillis();
-    private GuiCheckBox farmingRebinder;
-    private GuiCheckBox pestESP;
-    private GuiCheckBox quickTP;
-    private GuiCheckBox f7TermWPs;
-    private GuiCheckBox contHit;
-    private GuiCheckBox holdClick;
-    private GuiCheckBox lonelyMode;
     private final double boxesStartW = 0.12;
     private final double boxesStartH = 0.20;
     private final double boxesHmod = 0.05;
@@ -36,20 +29,11 @@ public class HKtoolsGUI extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.clear();
-        farmingRebinder = new GuiCheckBox(0, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 0)), "Farming Rebinder", FarmingListener.activated);
-        pestESP = new GuiCheckBox(1, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 1)), "Pest ESP", PestESP.activated);
-        quickTP = new GuiCheckBox(2, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 2)), "QuickTP Menu", QuickTpListener.activated);
-        f7TermWPs = new GuiCheckBox(3, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 3)), "F7 Terminal Waypoints", F7TermWaypoints.activated);
-        contHit = new GuiCheckBox(4, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 4)), "Continuous Hit", ContinuousHit.activated);
-        holdClick = new GuiCheckBox(5, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 5)), "Hold Click", HoldClick.activated);
-        lonelyMode = new GuiCheckBox(6, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * 6)), "Lonely Mode", LonelyMode.activated);
-        buttonList.add(farmingRebinder);
-        buttonList.add(pestESP);
-        buttonList.add(quickTP);
-        buttonList.add(f7TermWPs);
-        buttonList.add(contHit);
-        buttonList.add(holdClick);
-        buttonList.add(lonelyMode);
+
+        for (Feature f : HKtools.features) {
+            buttonList.add(new GuiCheckBox(f.id, (int) (width * boxesStartW), (int) (height * (boxesStartH + boxesHmod * f.id)), f.name, f.activated));
+        }
+
         super.initGui();
     }
 
@@ -90,37 +74,9 @@ public class HKtoolsGUI extends GuiScreen {
     @SideOnly(Side.CLIENT)
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        switch (button.id) {
-            case 0:
-                FarmingListener.activated = !FarmingListener.activated;
-                HKtools.CONFIG.setProperty("Farming", HKtools.boolToStr(FarmingListener.activated));
-                break;
-            case 1:
-                PestESP.activated = !PestESP.activated;
-                HKtools.CONFIG.setProperty("PestESP", HKtools.boolToStr(PestESP.activated));
-                break;
-            case 2:
-                QuickTpListener.activated = !QuickTpListener.activated;
-                HKtools.CONFIG.setProperty("QuickTpMenu", HKtools.boolToStr(QuickTpListener.activated));
-                break;
-            case 3:
-                F7TermWaypoints.activated = !F7TermWaypoints.activated;
-                HKtools.CONFIG.setProperty("F7TermWaypoints", HKtools.boolToStr(F7TermWaypoints.activated));
-                break;
-            case 4:
-                ContinuousHit.activated = !ContinuousHit.activated;
-                HKtools.CONFIG.setProperty("ContinuousHit", HKtools.boolToStr(ContinuousHit.activated));
-                break;
-            case 5:
-                HoldClick.activated = !HoldClick.activated;
-                HKtools.CONFIG.setProperty("HoldClick", HKtools.boolToStr(HoldClick.activated));
-                break;
-            case 6:
-                LonelyMode.activated = !LonelyMode.activated;
-                HKtools.CONFIG.setProperty("LonelyMode", HKtools.boolToStr(LonelyMode.activated));
-                break;
+        for (Feature f : HKtools.features) {
+            if (button.id == f.id) f.toggle();
         }
-        HKtools.CONFIG.store(new FileWriter("HKtools/hktools.config"), null);
         super.actionPerformed(button);
     }
 

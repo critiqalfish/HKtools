@@ -12,8 +12,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class HoldClick {
-    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("HoldClick"));
+public class HoldClick extends Feature {
+    public HoldClick() {
+        super("Hold Click");
+    }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent

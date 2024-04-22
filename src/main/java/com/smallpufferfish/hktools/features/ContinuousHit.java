@@ -11,8 +11,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ContinuousHit {
-    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("ContinuousHit"));
+public class ContinuousHit extends Feature {
+    public ContinuousHit() {
+        super("ContinuousHit");
+    }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent

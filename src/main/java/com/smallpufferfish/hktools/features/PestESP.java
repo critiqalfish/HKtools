@@ -15,9 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
 
-public class PestESP {
-    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("PestESP"));
+public class PestESP extends Feature {
     private static final AxisAlignedBB gardenBarnAABB = new AxisAlignedBB(new BlockPos(-46, 65, -46), new BlockPos(46, 90, 46));
+
+    public PestESP() {
+        super("PestESP");
+    }
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent

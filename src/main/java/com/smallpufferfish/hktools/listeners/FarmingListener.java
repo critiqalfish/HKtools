@@ -2,6 +2,7 @@ package com.smallpufferfish.hktools.listeners;
 
 import com.smallpufferfish.hktools.HKtools;
 import com.smallpufferfish.hktools.features.Farming;
+import com.smallpufferfish.hktools.features.Feature;
 import com.smallpufferfish.hktools.keybinds.FarmingKeybinds;
 import com.smallpufferfish.hktools.utils.CropMode;
 import com.smallpufferfish.hktools.utils.Utils;
@@ -18,8 +19,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FarmingListener {
-    public static boolean activated = HKtools.strToBool(HKtools.CONFIG.getProperty("Farming"));
+public class FarmingListener extends Feature {
+    public FarmingListener() {
+        super("Farming Rebinder");
+    }
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
