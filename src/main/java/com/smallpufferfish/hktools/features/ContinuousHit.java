@@ -40,11 +40,11 @@ public class ContinuousHit extends Feature {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (ContinuousHitKeybind.keybind.isPressed()) {
             if (!activated) {
-                activated = true;
+                setActivated(true);
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: activated continuous hit"));
             }
             else {
-                activated = false;
+                setActivated(false);
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: deactivated continuous hit"));
             }
         }

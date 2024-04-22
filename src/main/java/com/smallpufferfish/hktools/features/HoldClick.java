@@ -37,11 +37,11 @@ public class HoldClick extends Feature {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (HoldClickKeybind.keybind.isPressed()) {
             if (!activated) {
-                activated = true;
+                setActivated(true);
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: activated hold click"));
             }
             else {
-                activated = false;
+                setActivated(false);
                 KeyBinding.setKeyBindState(Minecraft.getMinecraft().gameSettings.keyBindAttack.getKeyCode(), false);
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: deactivated hold click"));
             }
