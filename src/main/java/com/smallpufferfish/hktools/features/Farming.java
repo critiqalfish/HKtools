@@ -121,6 +121,38 @@ public class Farming {
         wheatFarmer();
     }
 
+    public static void caneFarmer() {
+        GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+
+        if (FarmingKeybinds.rightKeybind.isKeyDown()) {
+            if (!goingRight) {
+                goingRight = true;
+                doKeys(true, gameSettings.keyBindForward, gameSettings.keyBindAttack);
+            }
+        } else {
+            if (goingRight) {
+                goingRight = false;
+                doKeys(false, gameSettings.keyBindForward, gameSettings.keyBindAttack);
+            }
+        }
+
+        if (FarmingKeybinds.leftKeybind.isKeyDown()) {
+            if (!goingLeft) {
+                goingLeft = true;
+                doKeys(true, gameSettings.keyBindLeft, gameSettings.keyBindAttack);
+            }
+        } else {
+            if (goingLeft) {
+                goingLeft = false;
+                doKeys(false, gameSettings.keyBindLeft, gameSettings.keyBindAttack);
+            }
+        }
+    }
+
+    public static void wartsFarmer() {
+        wheatFarmer();
+    }
+
     private static void doKeys(boolean pressed, KeyBinding... keys) {
         for (KeyBinding key : keys) {
             KeyBinding.setKeyBindState(key.getKeyCode(), pressed);

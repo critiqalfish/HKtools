@@ -7,5 +7,9 @@ public enum CropMode {
     CACTUS,
     WHEAT,
     CARROT,
-    POTATO
+    POTATO,
+    CANE,
+    WARTS,
+    MUSHROOMS,
+    COCOA
 }

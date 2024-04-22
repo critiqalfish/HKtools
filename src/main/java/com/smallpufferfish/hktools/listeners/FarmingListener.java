@@ -5,9 +5,11 @@ import com.smallpufferfish.hktools.features.Farming;
 import com.smallpufferfish.hktools.keybinds.FarmingKeybinds;
 import com.smallpufferfish.hktools.utils.CropMode;
 import com.smallpufferfish.hktools.utils.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,6 +55,16 @@ public class FarmingListener {
             case POTATO:
                 Farming.potatoFarmer();
                 break;
+            case CANE:
+                Farming.caneFarmer();
+                break;
+            case WARTS:
+                Farming.wartsFarmer();
+                break;
+            case MUSHROOMS:
+                break;
+            case COCOA:
+                break;
             default:
                 break;
         }
@@ -73,14 +85,45 @@ public class FarmingListener {
 
         if (target != null && target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
             if (mc.theWorld == null) return;
-            IBlockState blockState = mc.theWorld.getBlockState(target.getBlockPos());
-            try {
-                CropMode newMode = CropMode.valueOf(blockState.getBlock().getUnlocalizedName().substring("tile.".length()).toUpperCase());
-                if (newMode != Farming.crop) {
-                    Farming.crop = newMode;
-                    Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: selected crop " + Farming.crop));
-                }
-            } catch (IllegalArgumentException ignored) {}
+
+            Block block = mc.theWorld.getBlockState(target.getBlockPos()).getBlock();
+            CropMode newMode = CropMode.NONE;
+
+            if (block == Blocks.melon_block) {
+                newMode = CropMode.MELON;
+            }
+            else if (block == Blocks.pumpkin) {
+                newMode = CropMode.PUMPKIN;
+            }
+            else if (block == Blocks.cactus) {
+                newMode = CropMode.CACTUS;
+            }
+            else if (block == Blocks.wheat) {
+                newMode = CropMode.WHEAT;
+            }
+            else if (block == Blocks.carrots) {
+                newMode = CropMode.CARROT;
+            }
+            else if (block == Blocks.potatoes) {
+                newMode = CropMode.POTATO;
+            }
+            else if (block == Blocks.reeds) {
+                newMode = CropMode.CANE;
+            }
+            else if (block == Blocks.nether_wart) {
+                newMode = CropMode.WARTS;
+            }
+            else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
+                newMode = CropMode.MUSHROOMS;
+            }
+            else if (block == Blocks.cocoa) {
+                newMode = CropMode.COCOA;
+            }
+
+            if (newMode != Farming.crop) {
+                Farming.crop = newMode;
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: selected crop " + Farming.crop));
+            }
         }
 
         if (mc.gameSettings.mouseSensitivity != -1F/3F) {
