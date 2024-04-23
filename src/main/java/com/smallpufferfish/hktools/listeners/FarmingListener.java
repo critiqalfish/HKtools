@@ -44,6 +44,7 @@ public class FarmingListener extends Feature {
         switch (Farming.crop) {
             case MELON:
                 Farming.melonFarmer();
+                break;
             case PUMPKIN:
                 Farming.pumpkinFarmer();
                 break;
@@ -91,41 +92,40 @@ public class FarmingListener extends Feature {
             if (mc.theWorld == null) return;
 
             Block block = mc.theWorld.getBlockState(target.getBlockPos()).getBlock();
-            CropMode newMode = CropMode.NONE;
+            CropMode prevCrop = Farming.crop;
 
             if (block == Blocks.melon_block) {
-                newMode = CropMode.MELON;
+                Farming.crop = CropMode.MELON;
             }
             else if (block == Blocks.pumpkin) {
-                newMode = CropMode.PUMPKIN;
+                Farming.crop = CropMode.PUMPKIN;
             }
             else if (block == Blocks.cactus) {
-                newMode = CropMode.CACTUS;
+                Farming.crop = CropMode.CACTUS;
             }
             else if (block == Blocks.wheat) {
-                newMode = CropMode.WHEAT;
+                Farming.crop = CropMode.WHEAT;
             }
             else if (block == Blocks.carrots) {
-                newMode = CropMode.CARROT;
+                Farming.crop = CropMode.CARROT;
             }
             else if (block == Blocks.potatoes) {
-                newMode = CropMode.POTATO;
+                Farming.crop = CropMode.POTATO;
             }
             else if (block == Blocks.reeds) {
-                newMode = CropMode.CANE;
+                Farming.crop = CropMode.CANE;
             }
             else if (block == Blocks.nether_wart) {
-                newMode = CropMode.WARTS;
+                Farming.crop = CropMode.WARTS;
             }
             else if (block == Blocks.red_mushroom || block == Blocks.brown_mushroom) {
-                newMode = CropMode.MUSHROOMS;
+                Farming.crop = CropMode.MUSHROOMS;
             }
             else if (block == Blocks.cocoa) {
-                newMode = CropMode.COCOA;
+                Farming.crop = CropMode.COCOA;
             }
 
-            if (newMode != Farming.crop) {
-                Farming.crop = newMode;
+            if (prevCrop != Farming.crop) {
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("HKtools: selected crop " + Farming.crop));
             }
         }
