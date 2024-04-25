@@ -34,7 +34,7 @@ jobs:
       shell: bash
     
     - name: Create release
-      uses: actions/upload-artifact@v2
+      uses: ncipollo/release-action@v1
       with:
-        name: Artifacts
-        path: ./build/libs
+        name: Latest Release
+        artifacts: ./build/libs
