@@ -38,5 +38,5 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         name: Release ${{ github.ref_name }}
-        files: ./build/libs/HKTools-${{ github.ref_name }}.jar
+        files: ./build/libs/HKTools-*.jar
         draft: true
