@@ -60,7 +60,7 @@ public class QuickTpGUI extends GuiScreen {
                 color = new Color(255, 0, 255, 255).getRGB();
             }
 
-            String[] lines = names[i].split(System.lineSeparator());
+            String[] lines = names[i].split("\n");
             drawCenteredString(fontRendererObj, lines[0], points.get(i).x, points.get(i).y - 5, color);
             drawCenteredString(fontRendererObj, lines[1], points.get(i).x, points.get(i).y + 5, color);
         }
